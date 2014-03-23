@@ -1,4 +1,7 @@
-confessional
-============
+# Confessional
 
-A confessions web app
+## To run:
+
+`npm install`
+
+`npm start`
