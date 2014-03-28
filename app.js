@@ -5,11 +5,38 @@ var favicon = require('static-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var fs = require('fs');
 
 var routes = require('./routes');
 var users = require('./routes/user');
 
 var pg = require('pg');
+// var conString = "postgres://postgres:5432@localhost/postgres";
+
+var dbVals = fs.readFileSync('config/db.txt').toString().split('\n');
+var dbConf = {
+	user: dbVals[0],
+	password: dbVals[1],
+	database: dbVals[2],
+	host: dbVals[3],
+	port: dbVals[4]
+};
+var client = new pg.Client(dbConf);
+
+client.connect(function(err) {
+  if(err) {
+  	console.log(dbConf);
+    return console.error('could not connect to postgres', err);
+  }
+  client.query('SELECT NOW() AS "theTime"', function(err, result) {
+    if(err) {
+      return console.error('error running query', err);
+    }
+    console.log("HEYYY " + result.rows[0].theTime);
+    //output: Tue Jan 15 2013 19:12:47 GMT-600 (CST)
+    client.end();
+  });
+});
 
 var app = express();
 
