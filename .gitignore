@@ -1,3 +1,4 @@
 start.sh
 stop.sh
 config/
+node_modules/
