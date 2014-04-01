@@ -6,7 +6,7 @@
 ### Set up PostgreSQL
 - make sure PostgreSQL is installed
 - make sure you set up yourself as a valid user with correct permissions to create tables
-  - see the PostgreSQL documentation for help.
+  - see http://www.cyberciti.biz/faq/howto-add-postgresql-user-account/ or the PostgreSQL documentation for help.
 
 ### Create the Database:
 
