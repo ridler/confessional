@@ -25,14 +25,13 @@ var client = new pg.Client(dbConf);
 
 client.connect(function(err) {
   if(err) {
-  	console.log(dbConf);
     return console.error('could not connect to postgres', err);
   }
   client.query('SELECT NOW() AS "theTime"', function(err, result) {
     if(err) {
       return console.error('error running query', err);
     }
-    console.log("HEYYY " + result.rows[0].theTime);
+    console.log(result.rows[0].theTime);
     //output: Tue Jan 15 2013 19:12:47 GMT-600 (CST)
     client.end();
   });
@@ -57,10 +56,13 @@ app.get('/', routes.index);
 app.get('/users', users.list);
 
 app.get('/submit', function(req, res) {
-	res.render('submit')
+	res.render('submit');
 });
 
-/// catch 404 and forwarding to error handler
+app.get('/create', function(req, res) {
+	res.render('create');
+});
+/// catch 404 an,d forwarding to error handler
 app.use(function(req, res, next) {
     var err = new Error('Not Found');
     err.status = 404;
