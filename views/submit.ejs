@@ -44,9 +44,11 @@
     <div class="container" style="height:75%">
       <h1></br>I'm listening...</h1>
       <div class="input-group input-group-lg" style="width:100%">
-        <textarea type="textarea" class="form-control" placeholder="type here" style="margin-bottom:6px; height:300px"></textarea>
+        <textarea type="textarea" form="submission" name="content" class="form-control" placeholder="type here" style="margin-bottom:6px; height:300px"></textarea>
       </div>
-      <p><a class="btn btn-primary btn-lg" role="button" href="#">Submit &raquo;</a></p>
+      <form method="post" id="submission" action="/create">
+        <button type="submit" class="btn btn-primary btn-lg">Submit &raquo;</button>
+      </form>
     </div>
 
       <hr>

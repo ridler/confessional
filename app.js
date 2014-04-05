@@ -59,8 +59,8 @@ app.get('/submit', function(req, res) {
 	res.render('submit');
 });
 
-app.get('/create', function(req, res) {
-	res.render('create');
+app.post('/create', function(req, res) {
+	console.log(req.body.content);
 });
 /// catch 404 an,d forwarding to error handler
 app.use(function(req, res, next) {
