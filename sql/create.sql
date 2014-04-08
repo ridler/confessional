@@ -6,7 +6,7 @@ create table sessions (
 
 create table confessions (
 	ID serial primary key,
-	created_at timestamp not null,
+	created_at timestamp default current_timestamp,
 	sessionID int,
 	body text,
 	likes int,

@@ -21,20 +21,20 @@ var dbConf = {
 	host: dbVals[3],
 	port: dbVals[4]
 };
-var client = new pg.Client(dbConf);
+var pgClient = new pg.Client(dbConf);
 
-client.connect(function(err) {
+pgClient.connect(function(err) {
   if(err) {
     return console.error('could not connect to postgres', err);
   }
-  client.query('SELECT NOW() AS "theTime"', function(err, result) {
-    if(err) {
-      return console.error('error running query', err);
-    }
-    console.log(result.rows[0].theTime);
-    //output: Tue Jan 15 2013 19:12:47 GMT-600 (CST)
-    client.end();
-  });
+//   client.query('SELECT NOW() AS "theTime"', function(err, result) {
+//     if(err) {
+//       return console.error('error running query', err);
+//     }
+//     console.log(result.rows[0].theTime);
+//     //output: Tue Jan 15 2013 19:12:47 GMT-600 (CST)
+//     // client.end();
+//   });
 });
 
 var app = express();
@@ -60,18 +60,26 @@ app.get('/submit', function(req, res) {
 	res.render('submit');
 });
 
+var createConfession = function(req) {
+	pgClient.query("INSERT INTO confessions (body) VALUES ('" + req.body.content + "');",
+		function(err) { if(err) { console.error("ERROR", err); } });
+	req.session.confessions++;
+}
+
 app.post('/create', function(req, res) {
 	if(req.session.logged) {
 		if(req.session.banned) {
 			console.log("Banned!");
 		} else {
-			console.log(req.body.content);
-			req.session.confessions++;
+			createConfession(req);
+			// console.log(req.body.content);
+			// req.session.confessions++;
 		}
 	} else {
 		req.session.logged = true;
-		console.log(req.body.content);
-		req.session.confessions++;
+		createConfession(req);
+		// console.log(req.body.content);
+		// req.session.confessions++;
 	}
 	if(req.session.confessions > 1) {
 		req.session.banned = true;
