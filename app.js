@@ -47,7 +47,8 @@ app.use(favicon());
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
-app.use(cookieParser());
+app.use(express.cookieParser());
+app.use(express.session({secret: 'verysecretive'}));
 app.use(require('less-middleware')({ src: path.join(__dirname, 'public') }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(app.router);
@@ -60,7 +61,22 @@ app.get('/submit', function(req, res) {
 });
 
 app.post('/create', function(req, res) {
-	console.log(req.body.content);
+	if(req.session.logged) {
+		if(req.session.banned) {
+			console.log("Banned!");
+		} else {
+			console.log(req.body.content);
+			req.session.confessions++;
+		}
+	} else {
+		req.session.logged = true;
+		console.log(req.body.content);
+		req.session.confessions++;
+	}
+	if(req.session.confessions > 1) {
+		req.session.banned = true;
+	}
+	res.redirect('/');
 });
 /// catch 404 an,d forwarding to error handler
 app.use(function(req, res, next) {
