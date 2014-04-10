@@ -11,7 +11,6 @@ var routes = require('./routes');
 var users = require('./routes/user');
 
 var pg = require('pg');
-// var conString = "postgres://postgres:5432@localhost/postgres";
 
 var dbVals = fs.readFileSync('config/db.txt').toString().split('\n');
 var dbConf = {
@@ -53,11 +52,24 @@ app.use(require('less-middleware')({ src: path.join(__dirname, 'public') }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(app.router);
 
-app.get('/', routes.index);
+// app.get('/', routes.index);
 app.get('/users', users.list);
 
 app.get('/submit', function(req, res) {
 	res.render('submit');
+});
+
+app.get('/', function(req, res) {
+	var indexQ = pgClient.query('SELECT * FROM confessions;', function(err) { if(err) { console.error("ERROR", err); } });
+    var qIndexRes = [];
+    indexQ.on('row', function(row) {
+      qIndexRes.push(row);
+    });
+    indexQ.on('end', function(result) {
+      //fired once and only once, after the last row has been returned and after all 'row' events are emitted
+      //in this example, the 'rows' array now contains an ordered set of all the rows which we received from postgres
+      res.render('index', {confessions: result.rows});
+    })
 });
 
 var createConfession = function(req) {
