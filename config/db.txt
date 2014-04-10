@@ -1,0 +1,5 @@
+tagg
+password
+confessional
+localhost
+5432
