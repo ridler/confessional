@@ -81,7 +81,7 @@ var createConfession = function(req) {
 app.post('/create', function(req, res) {
 	if(req.session.logged) {
 		if(req.session.banned) {
-			console.log("Banned!");
+			res.send("Banned!");
 		} else {
 			createConfession(req);
 			// console.log(req.body.content);
@@ -103,6 +103,11 @@ app.use(function(req, res, next) {
     var err = new Error('Not Found');
     err.status = 404;
     next(err);
+});
+
+app.post('/search', function(req, res) {
+	console.log(req.params);
+	res.redirect('/');
 });
 
 /// error handlers
