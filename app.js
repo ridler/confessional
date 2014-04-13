@@ -59,6 +59,9 @@ app.get('/submit', function(req, res) {
 	res.render('submit');
 });
 
+app.get('/banned', function(req, res) {
+	res.render('banned');
+})
 app.get('/', function(req, res) {
 	var indexQ = pgClient.query('SELECT * FROM confessions;', function(err) { if(err) { console.error("ERROR", err); } });
     var qIndexRes = [];
@@ -79,24 +82,15 @@ var createConfession = function(req) {
 }
 
 app.post('/create', function(req, res) {
-	if(req.session.logged) {
-		if(req.session.banned) {
-			res.send("Banned!");
-		} else {
-			createConfession(req);
-			// console.log(req.body.content);
-			// req.session.confessions++;
-		}
-	} else {
-		req.session.logged = true;
-		createConfession(req);
-		// console.log(req.body.content);
-		// req.session.confessions++;
-	}
 	if(req.session.confessions > 1) {
 		req.session.banned = true;
+		res.redirect('/banned');
+		return;
+	} else {
+		createConfession(req);
+		res.redirect('/');
 	}
-	res.redirect('/');
+
 });
 /// catch 404 an,d forwarding to error handler
 app.use(function(req, res, next) {
