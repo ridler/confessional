@@ -57,30 +57,21 @@
         <div class="col-md-4">
           <h4><%= confessions[i].created_at %></h4>
           <h5><%= confessions[i].body %></h5>
-          <a class="btn btn-default" href="#" role="button" style="margin-left:5px">+</a><a class="btn btn-default" href="#" role="button">-</a>
-          <p><span style="color:blue">1/2/2012: </span>Comment 1<a class="btn btn-default" href="#" role="button" style="margin-left:5px">+</a><a class="btn btn-default" href="#" role="button">-</a></p>
+          <p>+ : <span class="likeCount" id="<%=confessions[i].id%>"><%= confessions[i].likes %></span> | - : <span class="dislikeCount" id="<%=confessions[i].id%>"><%= confessions[i].dislikes %></span>
+          <a class="like" style="cursor: pointer" id="<%=confessions[i].id%>" role="button">Like</a> | <a class="dislike" id="<%=confessions[i].id%>" style="cursor: pointer" role="button">Dislike</a></p>
+          <div class="input-group input-group-md" style="width:80%">
+            <textarea type="textarea" form="comment<%=confessions[i].id%>" name="content" class="form-control" placeholder="comment" style="margin-bottom:6px; height:50px"></textarea>
+        </div>
+        <form method="post" id="comment<%=confessions[i].id%>" action="/comment">
+          <button type="submit" id="<%=confessions[i].id%>" class="comment btn btn-primary btn-sm">Submit &raquo;</button>
+        </form>
+          <!-- <p><span style="color:blue">1/2/2012: </span>Comment 1<a class="btn btn-default" href="#" role="button" style="margin-left:5px">+</a><a class="btn btn-default" href="#" role="button">-</a></p>
           <p><span style="color:blue">1/4/2012: </span>Comment 2<a class="btn btn-default" href="#" role="button" style="margin-left:5px">+</a><a class="btn btn-default" href="#" role="button">-</a></p>
-          <a class="btn btn-default" href="#" role="button">Comment</a>
+          <a class="btn btn-default" href="#" role="button">Comment</a> -->
         </div>
        <% }; %>
        </div>
-<!--         <div class="col-md-4">
-          <h4>3/4/2014 5:55PM</h4>
-          <h5>I did something wierd one time.  It's funny for people to read about. ^o^<a class="btn btn-default" href="#" role="button" style="margin-left:5px">+</a><a class="btn btn-default" href="#" role="button">-</a></h5>
-          <p><span style="color:blue">1/2/2012: </span>Comment 1<a class="btn btn-default" href="#" role="button" style="margin-left:5px">+</a><a class="btn btn-default" href="#" role="button">-</a></p>
-          <p><span style="color:blue">1/4/2012: </span>Comment 2<a class="btn btn-default" href="#" role="button" style="margin-left:5px">+</a><a class="btn btn-default" href="#" role="button">-</a></p>
-          <a class="btn btn-default" href="#" role="button">Comment</a>
-        </div>
-        <div class="col-md-4">
-          <h2>Heading</h2>
-          <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-          <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
-       </div>
-        <div class="col-md-4">
-          <h2>Heading</h2>
-          <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
-          <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
-        </div> -->
+
       <hr>
 
       <footer>
@@ -94,5 +85,6 @@
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <script src="javascripts/bootstrap.min.js"></script>
+    <script src="javascripts/aja.js"></script>
   </body>
 </html>

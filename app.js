@@ -26,14 +26,6 @@ pgClient.connect(function(err) {
   if(err) {
     return console.error('could not connect to postgres', err);
   }
-//   client.query('SELECT NOW() AS "theTime"', function(err, result) {
-//     if(err) {
-//       return console.error('error running query', err);
-//     }
-//     console.log(result.rows[0].theTime);
-//     //output: Tue Jan 15 2013 19:12:47 GMT-600 (CST)
-//     // client.end();
-//   });
 });
 
 var app = express();
@@ -62,8 +54,9 @@ app.get('/submit', function(req, res) {
 app.get('/banned', function(req, res) {
 	res.render('banned');
 })
+
 app.get('/', function(req, res) {
-	var indexQ = pgClient.query('SELECT * FROM confessions;', function(err) { if(err) { console.error("ERROR", err); } });
+	var indexQ = pgClient.query('SELECT * FROM confessions LIMIT 20;', function(err) { if(err) { console.error("ERROR", err); } });
     var qIndexRes = [];
     indexQ.on('row', function(row) {
       qIndexRes.push(row);
@@ -75,8 +68,13 @@ app.get('/', function(req, res) {
     })
 });
 
+// app.post('update', function(req, res) {
+//   pgClient.query
+// }
+
 var createConfession = function(req) {
-	pgClient.query("INSERT INTO confessions (body) VALUES ('" + req.body.content + "');",
+  var inVal = req.body.content.replace(/(['"])/g, "\\$1");
+	pgClient.query("INSERT INTO confessions (body) VALUES ('" + inVal + "');",
 		function(err) { if(err) { console.error("ERROR", err); } });
 	req.session.confessions++;
 }
@@ -90,8 +88,24 @@ app.post('/create', function(req, res) {
 		createConfession(req);
 		res.redirect('/');
 	}
-
 });
+
+app.post('/like', function(req, res) {
+	pgClient.query("update confessions set likes = likes + 1 where id = " + req.body.id,
+		function(err) { if(err) { console.error("ERROR", err); } });
+	res.send(true);
+});
+
+app.post('/dislike', function(req, res) {
+	pgClient.query("update confessions set dislikes = dislikes + 1 where id = " + req.body.id,
+		function(err) { if(err) { console.error("ERROR", err); } });
+	res.send(true);
+});
+
+app.post('/comment', function(req, res) {
+	console.log(req.body.id);
+	res.send(true);
+})
 /// catch 404 an,d forwarding to error handler
 app.use(function(req, res, next) {
     var err = new Error('Not Found');

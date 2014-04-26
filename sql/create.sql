@@ -9,8 +9,8 @@ create table confessions (
 	created_at timestamp default current_timestamp,
 	sessionID int,
 	body text,
-	likes int,
-	dislikes int,
+	likes int default 0,
+	dislikes int default 0,
 	FOREIGN KEY (sessionID) REFERENCES sessions(ID)
 );
 
@@ -20,8 +20,8 @@ create table comments (
 	confessionID int,
 	sessionID int,
 	body text,
-	likes int,
-	dislikes int,
+	likes int default 0,
+	dislikes int default 0,
 	FOREIGN KEY (confessionID) REFERENCES confessions(ID),
 	FOREIGN KEY (sessionID) REFERENCES sessions(ID)
 );
