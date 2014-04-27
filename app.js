@@ -13,14 +13,13 @@ var users = require('./routes/user');
 var pg = require('pg');
 
 var dbVals = fs.readFileSync('config/db.txt').toString().split('\n');
-var dbConf = {
+var pgClient = new pg.Client({
 	user: dbVals[0],
 	password: dbVals[1],
 	database: dbVals[2],
 	host: dbVals[3],
 	port: dbVals[4]
-};
-var pgClient = new pg.Client(dbConf);
+});
 
 pgClient.connect(function(err) {
   if(err) {
@@ -68,10 +67,6 @@ app.get('/', function(req, res) {
     })
 });
 
-// app.post('update', function(req, res) {
-//   pgClient.query
-// }
-
 var createConfession = function(req) {
   var inVal = req.body.content.replace(/(['"])/g, "\\$1");
 	pgClient.query("INSERT INTO confessions (body) VALUES ('" + inVal + "');",
@@ -103,9 +98,10 @@ app.post('/dislike', function(req, res) {
 });
 
 app.post('/comment', function(req, res) {
-	console.log(req.body.id);
+	console.log(req.content);
 	res.send(true);
 })
+
 /// catch 404 an,d forwarding to error handler
 app.use(function(req, res, next) {
     var err = new Error('Not Found');
@@ -114,7 +110,7 @@ app.use(function(req, res, next) {
 });
 
 app.post('/search', function(req, res) {
-	console.log(req.params);
+	console.log(req.body.content);
 	res.redirect('/');
 });
 
