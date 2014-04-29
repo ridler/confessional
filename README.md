@@ -1,11 +1,14 @@
 # Confessional
 
-## Setup
-- clone this repository
+## Dependencies
+- Node.js, NPM, and Express
+- PostgreSQL
+- The first method on this page is my favorite way to install node and npm: https://gist.github.com/isaacs/579814
+- The standard apt-get install on Ubuntu 12.04 for Postgres is what I used.
 
 ### Set up PostgreSQL
-- make sure PostgreSQL and any dependencies are installed.
-- make sure a PostgreSQL server is running on localhost.
+
+- make sure a PostgreSQL server is running on localhost:5432.
 
 ### Create the Database:
 
@@ -23,7 +26,7 @@ $ psql -d confessional -a -f sql/create.sql
 If the above doesn't work try http://www.cyberciti.biz/faq/howto-add-postgresql-user-account/ or the PostgreSQL documentation for help.
 
 ### Create a configuration file for the database
-In a new folder called `config` create a file called `db.txt` with the following content:
+Update the `config/db.txt` file with your username and password that you created above.
 
 ```
 <your username>
@@ -32,10 +35,10 @@ confessional
 localhost
 5432
 ```
+
 ### Install the node components
 
 ```bash
-$ npm install pg
 $ npm install
 ```
 
